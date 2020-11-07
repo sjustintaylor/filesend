@@ -1614,6 +1614,25 @@
     regenerator-runtime "^0.13.3"
     ts-dedent "^1.1.1"
 
+"@storybook/addon-events@^6.0.28":
+  version "6.0.28"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-events/-/addon-events-6.0.28.tgz#122950b04762ab53c1b565f21f9442044c0ea108"
+  integrity sha512-X8gDwmwQPGP+fDVu93y3d2oxYdDj6UK+WdLnjxoAhlCSF1h7EGMwSvoy+kkrUFqj54GWLITMdc3Po4YCxSULxg==
+  dependencies:
+    "@storybook/addons" "6.0.28"
+    "@storybook/api" "6.0.28"
+    "@storybook/client-api" "6.0.28"
+    "@storybook/core-events" "6.0.28"
+    "@storybook/theming" "6.0.28"
+    core-js "^3.0.1"
+    format-json "^1.0.3"
+    lodash "^4.17.15"
+    prop-types "^15.7.2"
+    react "^16.8.3"
+    react-lifecycles-compat "^3.0.4"
+    react-textarea-autosize "^8.1.1"
+    regenerator-runtime "^0.13.3"
+
 "@storybook/addon-links@^6.0.28":
   version "6.0.28"
   resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-6.0.28.tgz#990aa86332de7a745edfc9c98dffff8aa4916bda"
@@ -6669,6 +6688,11 @@ form-data@~2.3.2:
     asynckit "^0.4.0"
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
+
+format-json@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/format-json/-/format-json-1.0.3.tgz#268e3d3e169792ff49bb5b030f22c87ca1c2cd9f"
+  integrity sha1-Jo49PhaXkv9Ju1sDDyLIfKHCzZ8=
 
 format@^0.2.0:
   version "0.2.2"

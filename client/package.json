@@ -21,6 +21,7 @@
     "@babel/core": "^7.12.3",
     "@storybook/addon-actions": "^6.0.28",
     "@storybook/addon-essentials": "^6.0.28",
+    "@storybook/addon-events": "^6.0.28",
     "@storybook/addon-links": "^6.0.28",
     "@storybook/preset-scss": "^1.0.3",
     "@storybook/vue": "^6.0.28",

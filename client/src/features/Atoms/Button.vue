@@ -1,5 +1,7 @@
 <template>
-  <button :style="cssVars" :class="classObject">{{ label }}</button>
+  <button @click="$emit('btn-click')" :class="classObject">
+    {{ label }}
+  </button>
 </template>
 
 <script>
