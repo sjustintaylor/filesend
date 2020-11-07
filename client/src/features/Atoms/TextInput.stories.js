@@ -9,10 +9,10 @@ export default {
     },
     placeholder: { control: { type: "text" } },
     close: {
-      control: { type: "select", options: ["true", "false"] },
+      control: { type: "boolean" },
     },
     required: {
-      control: { type: "select", options: ["true", "false"] },
+      control: { type: "boolean" },
     },
   },
 };
@@ -27,6 +27,7 @@ export const Text = Template.bind({});
 Text.args = {
   type: "text",
   placeholder: "Random text",
+  required: true,
 };
 
 export const Email = Template.bind({});

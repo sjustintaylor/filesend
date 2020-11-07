@@ -1,12 +1,13 @@
 <template>
   <div>
     <input
+      placeholder="   "
       :type="type"
-      :class="inputClasses"
-      :required="required"
+      :required="isRequired"
       v-model="input"
+      @input="$emit('input-change', input)"
     />
-    <button id="close" @click="input = ''">
+    <button v-if="close" id="close" @click="input = ''">
       <span class="material-icons">
         close
       </span>
@@ -27,8 +28,10 @@ export default {
     placeholder: {
       type: String,
     },
-    caption: {
-      type: String,
+    required: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
     close: { type: Boolean, default: true },
     required: {
@@ -40,7 +43,6 @@ export default {
   data: function() {
     return {
       input: "",
-      error: "",
     };
   },
   computed: {
@@ -48,6 +50,9 @@ export default {
       return {
         hold: this.input.length > 0,
       };
+    },
+    isRequired: function() {
+      return Boolean(this.required);
     },
   },
 };
@@ -63,8 +68,6 @@ div {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  // justify-content: center;
-  // align-items: flex-start;
   color: base.$inputText;
   transition: 0.2s ease all;
   position: relative;
@@ -88,13 +91,14 @@ div {
     &:active,
     &:focus {
       border: 2px solid base.$inputBorder;
+      background-color: transparent;
     }
     &:focus ~ label {
       top: 0;
-      font-weight: 500;
+      font-weight: bold;
       font-size: 0.875rem;
     }
-    &:invalid {
+    &:not(:placeholder-shown):invalid {
       border: 2px solid base.$inputError;
       background-color: base.$inputErrorBg;
     }
@@ -134,7 +138,7 @@ div {
 }
 .hold {
   top: 0;
-  font-weight: 500;
+  font-weight: bold;
   font-size: 0.875rem;
 }
 </style>
