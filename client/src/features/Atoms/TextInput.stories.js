@@ -14,6 +14,12 @@ export default {
     required: {
       control: { type: "boolean" },
     },
+    caption: {
+      control: { type: "text" },
+    },
+    setError: {
+      control: { type: "boolean" },
+    },
   },
 };
 

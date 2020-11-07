@@ -5,6 +5,7 @@
       :type="type"
       :required="isRequired"
       v-model="input"
+      :class="{ invalid: setError }"
       @input="$emit('input-change', input)"
     />
     <button v-if="close" id="close" @click="input = ''">
@@ -13,6 +14,7 @@
       </span>
     </button>
     <label :class="labelClasses" v-if="placeholder">{{ placeholder }}</label>
+    <span v-if="caption">{{ caption }}</span>
   </div>
 </template>
 
@@ -39,6 +41,15 @@ export default {
       required: true,
       default: false,
     },
+    caption: {
+      type: String,
+      required: false,
+    },
+    setError: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   data: function() {
     return {
@@ -61,6 +72,7 @@ export default {
 <style scoped lang="scss">
 @use "../../assets/colors" as base;
 div {
+  width: 20rem;
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-size: 1rem;
@@ -74,6 +86,7 @@ div {
   span {
     padding-left: 1rem;
     max-width: 20rem;
+    flex-basis: 100%;
   }
   input {
     display: block;
@@ -83,11 +96,12 @@ div {
     border-radius: 1rem;
     background-color: base.$inputBackground;
     border: 2px solid base.$inputBackground;
-    width: 20rem;
+    width: 100%;
     padding-left: 1.75rem;
     padding-right: 3.25rem;
     padding-top: 1.25rem;
     font-size: 1rem;
+
     &:active,
     &:focus {
       border: 2px solid base.$inputBorder;
@@ -140,5 +154,9 @@ div {
   top: 0;
   font-weight: bold;
   font-size: 0.875rem;
+}
+.invalid {
+  border: 2px solid base.$inputError;
+  background-color: base.$inputErrorBg;
 }
 </style>
