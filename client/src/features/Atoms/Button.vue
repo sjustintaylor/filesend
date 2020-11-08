@@ -1,5 +1,5 @@
 <template>
-  <button @click="$emit('btn-click')" :class="classObject">
+  <button :type="type" @click="$emit('btn-click')" :class="classObject">
     {{ label }}
   </button>
 </template>
@@ -8,12 +8,21 @@
 export default {
   name: "Button",
   props: {
-    label: { type: String, required: true },
+    label: { type: String, required: true, default: "Button" },
     variant: {
       type: String,
       default: "solid",
+      required: false,
       validator: function(value) {
         return ["solid", "outline", "text"].includes(value);
+      },
+    },
+    type: {
+      type: String,
+      required: false,
+      default: "button",
+      validator: function(value) {
+        return ["button", "submit"].includes(value);
       },
     },
   },
@@ -45,12 +54,10 @@ button {
   &.solid {
     background-color: base.$baseColor;
     border: 2px solid base.$baseColor;
-    &:hover {
+    &:hover,
+    &:focus {
       border: 2px solid base.$hoverColor;
       background-color: base.$hoverColor;
-    }
-    &:focus {
-      border: 4px solid base.$focusColor;
     }
     &:active {
       background-color: color.adjust(base.$hoverColor, $lightness: -10%);

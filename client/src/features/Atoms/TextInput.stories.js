@@ -4,20 +4,48 @@ export default {
   title: "Atoms/TextInput",
   component: TextInput,
   argTypes: {
+    "input-change": {
+      description:
+        "Fired every time the input changes. The payload contains the input contents",
+      table: { type: { summary: "string" } },
+      action: "clicked",
+    },
     type: {
+      description:
+        "Sets the type of the input. Email inputs are auto validated",
+      table: {
+        type: {
+          required: true,
+          summary: "Valid types: text, email, password",
+        },
+      },
       control: { type: "select", options: ["email", "text", "password"] },
     },
-    placeholder: { control: { type: "text" } },
-    close: {
+    placeholder: {
+      description: "Sets the placeholder text for the input",
+      table: {
+        type: {},
+      },
+      control: { type: "text" },
+    },
+    clear: {
+      description: "Should the input include a button to clear its contents?",
+      table: {},
       control: { type: "boolean" },
     },
     required: {
+      description:
+        "Is this input required? The element will change to an error status if the element loses focus without input",
       control: { type: "boolean" },
     },
-    caption: {
+    errorMessage: {
+      description:
+        "The error message to display to the user if the input is required or if setError is true",
       control: { type: "text" },
     },
     setError: {
+      description:
+        "Sets the input state to invalid. Use to provide feedback on input from an entire form",
       control: { type: "boolean" },
     },
   },
@@ -45,4 +73,12 @@ export const Password = Template.bind({});
 Password.args = {
   type: "password",
   placeholder: "Password",
+};
+
+export const RequiredInput = Template.bind({});
+RequiredInput.args = {
+  type: "email",
+  placeholder: "Email address",
+  errorMessage: "Email address is required",
+  required: true,
 };

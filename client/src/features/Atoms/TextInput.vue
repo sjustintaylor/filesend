@@ -1,20 +1,24 @@
 <template>
   <div>
+    <!-- // Add auto required with blur event and computed value -->
     <input
       placeholder="   "
       :type="type"
       :required="isRequired"
       v-model="input"
-      :class="{ invalid: setError }"
+      @blur="touched = true"
+      :class="{ invalid: setError || (touched && isRequired) }"
       @input="$emit('input-change', input)"
     />
-    <button v-if="close" id="close" @click="input = ''">
+    <button v-if="clear" id="clear" @click="input = ''">
       <span class="material-icons">
         close
       </span>
     </button>
     <label :class="labelClasses" v-if="placeholder">{{ placeholder }}</label>
-    <span v-if="caption">{{ caption }}</span>
+    <span v-if="(errorMessage && isRequired && touched) || setError">{{
+      errorMessage
+    }}</span>
   </div>
 </template>
 
@@ -25,25 +29,28 @@ export default {
     type: {
       type: String,
       required: true,
+      default: "text",
       validator: (value) => ["email", "text", "password"].includes(value),
     },
     placeholder: {
       type: String,
+      default: "",
     },
     required: {
       type: Boolean,
       required: false,
       default: false,
     },
-    close: { type: Boolean, default: true },
+    clear: { type: Boolean, default: true },
     required: {
       type: Boolean,
       required: true,
       default: false,
     },
-    caption: {
+    errorMessage: {
       type: String,
       required: false,
+      default: "",
     },
     setError: {
       type: Boolean,
@@ -54,6 +61,7 @@ export default {
   data: function() {
     return {
       input: "",
+      touched: false,
     };
   },
   computed: {
@@ -117,7 +125,7 @@ div {
       background-color: base.$inputErrorBg;
     }
   }
-  #close {
+  #clear {
     margin-left: -3rem;
     width: 3rem;
     font-size: 24px;

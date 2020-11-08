@@ -5,7 +5,25 @@ export default {
   component: MyButton,
   argTypes: {
     variant: {
+      description: "Sets the button's display type",
+      table: { type: { summary: "solid, outline, text" } },
       control: { type: "select", options: ["solid", "outline", "text"] },
+    },
+    label: {
+      description: "Sets the button text",
+    },
+    "btn-click": {
+      description: "Fires every time the button is clicked",
+      table: { type: { summary: "No payload" } },
+      action: "btn-clicked",
+    },
+    type: {
+      description: "Sets the button type",
+      table: { type: { summary: "Valid types: button, submit" } },
+      control: {
+        type: "select",
+        options: ["button", "submit"],
+      },
     },
   },
 };
