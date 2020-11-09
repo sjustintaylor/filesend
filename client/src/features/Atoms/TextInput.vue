@@ -1,24 +1,29 @@
 <template>
   <div>
-    <!-- // Add auto required with blur event and computed value -->
     <input
       placeholder="   "
       :type="type"
       :required="isRequired"
       v-model="input"
       @blur="touched = true"
-      :class="{ invalid: setError || (touched && isRequired) }"
-      @input="$emit('input-change', input)"
+      :class="{
+        invalid: setError || (touched && isRequired && input.length === 0),
+      }"
+      @input="$emit('input', $event.target.value)"
     />
-    <button v-if="clear" id="clear" @click="input = ''">
+    <button v-if="input.length > 0" id="clear" @click="input = ''">
       <span class="material-icons">
         close
       </span>
     </button>
     <label :class="labelClasses" v-if="placeholder">{{ placeholder }}</label>
-    <span v-if="(errorMessage && isRequired && touched) || setError">{{
-      errorMessage
-    }}</span>
+    <span
+      v-if="
+        (errorMessage && isRequired && touched && input.length === 0) ||
+          setError
+      "
+      >{{ errorMessage }}</span
+    >
   </div>
 </template>
 
@@ -26,6 +31,11 @@
 export default {
   name: "TextInput",
   props: {
+    value: {
+      type: String,
+      required: false,
+      default: "",
+    },
     type: {
       type: String,
       required: true,
@@ -36,12 +46,6 @@ export default {
       type: String,
       default: "",
     },
-    required: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    clear: { type: Boolean, default: true },
     required: {
       type: Boolean,
       required: true,
@@ -64,6 +68,9 @@ export default {
       touched: false,
     };
   },
+  mounted() {
+    this.input = this.value;
+  },
   computed: {
     labelClasses: function() {
       return {
@@ -78,22 +85,25 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@use "../../assets/colors" as base;
+@use "@/assets/colors" as colors;
 div {
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
   font-family: inherit;
-  width: 20rem;
+  max-width: 25rem;
   font-weight: 400;
   font-size: 1rem;
   line-height: 2rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  color: base.$inputText;
+  color: colors.$inputText;
   transition: 0.2s ease all;
   position: relative;
   span {
     padding-left: 1rem;
-    max-width: 20rem;
+    max-width: 100%;
     flex-basis: 100%;
   }
   input {
@@ -103,8 +113,8 @@ div {
     transition: 0.2s ease all;
     height: 3.5rem;
     border-radius: 1rem;
-    background-color: base.$inputBackground;
-    border: 2px solid base.$inputBackground;
+    background-color: colors.$inputBackground;
+    border: 2px solid colors.$inputBackground;
     width: 100%;
     padding-left: 1.75rem;
     padding-right: 3.25rem;
@@ -113,7 +123,7 @@ div {
 
     &:active,
     &:focus {
-      border: 2px solid base.$inputBorder;
+      border: 2px solid colors.$inputBorder;
       background-color: transparent;
     }
     &:focus ~ label {
@@ -122,8 +132,8 @@ div {
       font-size: 0.875rem;
     }
     &:not(:placeholder-shown):invalid {
-      border: 2px solid base.$inputError;
-      background-color: base.$inputErrorBg;
+      border: 2px solid colors.$inputError;
+      background-color: colors.$inputErrorBg;
     }
   }
   #clear {
@@ -139,14 +149,14 @@ div {
     justify-content: center;
     align-items: center;
     padding-right: 1rem;
-    color: base.$inputPlaceholder;
+    color: colors.$inputPlaceholder;
     transition: 0.2s ease all;
     &:hover,
     &:focus {
-      color: base.$inputCaption;
+      color: colors.$inputCaption;
     }
     &:active {
-      color: base.$inputText;
+      color: colors.$inputText;
     }
   }
   label {
@@ -156,7 +166,7 @@ div {
     left: 1.75rem;
     position: absolute;
     pointer-events: none;
-    color: base.$inputPlaceholder;
+    color: colors.$inputPlaceholder;
   }
 }
 .hold {
@@ -165,7 +175,7 @@ div {
   font-size: 0.875rem;
 }
 .invalid {
-  border: 2px solid base.$inputError;
-  background-color: base.$inputErrorBg;
+  border: 2px solid colors.$inputError;
+  background-color: colors.$inputErrorBg;
 }
 </style>

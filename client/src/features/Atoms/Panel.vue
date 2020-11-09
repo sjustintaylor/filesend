@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="panel">
     <slot></slot>
   </div>
 </template>
@@ -11,15 +11,24 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@use "../../assets/colors" as base;
-div {
-  margin-left: auto;
-  margin-right: auto;
+@use "@/assets/colors" as colors;
+@use "@/assets/responsive" as breakpoints;
+#panel {
   font-family: inherit;
   padding: 2rem;
-  max-width: 960px;
-  background-color: base.$panelColor;
-  border-radius: 16px;
-  filter: drop-shadow(0px 32px 64px rgba(17, 17, 17, 0.08));
+  background-color: colors.$panelColor;
+  @media screen and (max-width: breakpoints.$small) {
+    padding: 1rem;
+  }
+  @media screen and (max-width: breakpoints.$medium) {
+    width: 100%;
+  }
+  @media screen and (min-width: breakpoints.$large) {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 16px;
+    filter: drop-shadow(0px 32px 64px rgba(17, 17, 17, 0.08));
+  }
 }
 </style>

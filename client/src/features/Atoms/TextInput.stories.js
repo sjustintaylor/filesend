@@ -4,11 +4,14 @@ export default {
   title: "Atoms/TextInput",
   component: TextInput,
   argTypes: {
-    "input-change": {
-      description:
-        "Fired every time the input changes. The payload contains the input contents",
+    input: {
+      description: "Fired when the input changes. Can be used with v-model",
       table: { type: { summary: "string" } },
       action: "clicked",
+    },
+    value: {
+      description: "The initial value of the input",
+      control: { type: "text" },
     },
     type: {
       description:
@@ -27,11 +30,6 @@ export default {
         type: {},
       },
       control: { type: "text" },
-    },
-    clear: {
-      description: "Should the input include a button to clear its contents?",
-      table: {},
-      control: { type: "boolean" },
     },
     required: {
       description:
@@ -81,4 +79,5 @@ RequiredInput.args = {
   placeholder: "Email address",
   errorMessage: "Email address is required",
   required: true,
+  value: "Hello",
 };
