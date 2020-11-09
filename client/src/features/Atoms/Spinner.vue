@@ -1,5 +1,5 @@
 <template>
-  <div class="lds-dual-ring" :class="spinnerSize"></div>
+  <div class="lds-dual-ring" :style="cssVars"></div>
 </template>
 
 <script>
@@ -11,16 +11,15 @@ export default {
       required: false,
       default: "solid",
       validator: function(value) {
-        return ["solid", "outline", "text"].includes(value);
+        return ["solid", "outline"].includes(value);
       },
-      size: {
-        type: String,
-        required: false,
-        default: "small",
-        validator: function(value) {
-          return ["small", "medium", "large"].includes(value);
-        },
-      },
+    },
+  },
+  computed: {
+    cssVars: function() {
+      return {
+        "--color": this.variant === "solid" ? "#fff" : "#5f2eea",
+      };
     },
   },
 };
@@ -37,8 +36,8 @@ export default {
   height: 1rem;
   width: 1rem;
   border-radius: 50%;
-  border: 3px solid #fff;
-  border-color: #fff transparent #fff transparent;
+  border: 3px solid var(--color);
+  border-color: var(--color) transparent var(--color) transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
 @keyframes lds-dual-ring {

@@ -3,7 +3,12 @@ import Spinner from "./Spinner.vue";
 export default {
   title: "Atoms/Spinner",
   component: Spinner,
-  argTypes: {},
+  argTypes: {
+    variant: {
+      description: "Sets the spinner context",
+      control: { type: "select", options: ["solid", "outline"] },
+    },
+  },
 };
 const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
@@ -12,4 +17,6 @@ const Template = (args, { argTypes }) => ({
 });
 
 export const BaseSpinner = Template.bind({});
-BaseSpinner.args = {};
+BaseSpinner.args = {
+  variant: "outline",
+};
