@@ -41,11 +41,13 @@ export default {
 <style scoped lang="scss">
 @use "sass:color";
 @use "../../assets/colors" as base;
+@use '../../assets/resets';
+
 button {
+  font-family: inherit;
   border-radius: 40px;
   padding: 8px 16px;
   color: base.$textColor;
-  font-family: "Poppins", sans-serif;
   font-weight: 600;
   line-height: 1.5rem;
   min-width: 7.5rem;

@@ -80,8 +80,8 @@ export default {
 <style scoped lang="scss">
 @use "../../assets/colors" as base;
 div {
+  font-family: inherit;
   width: 20rem;
-  font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-size: 1rem;
   line-height: 2rem;
@@ -97,6 +97,7 @@ div {
     flex-basis: 100%;
   }
   input {
+    font-family: inherit;
     display: block;
     box-sizing: border-box;
     transition: 0.2s ease all;

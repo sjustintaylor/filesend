@@ -31,7 +31,7 @@ export default {
 const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
   components: { MyButton },
-  template: '<my-button @btn-click="onClick" v-bind="$props" />',
+  template: '<my-button v-bind="$props" />',
 });
 
 export const Solid = Template.bind({});
