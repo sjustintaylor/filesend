@@ -11,5 +11,5 @@ const Template = (args, { argTypes }) => ({
   template: '<panel v-bind="$props" />',
 });
 
-export const Empty = Template.bind({});
-Empty.args = {};
+export const BasePanel = Template.bind({});
+BasePanel.args = {};
