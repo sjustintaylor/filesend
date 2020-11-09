@@ -9,13 +9,10 @@ export default {
       table: { type: { summary: "solid, outline, text" } },
       control: { type: "select", options: ["solid", "outline", "text"] },
     },
-    label: {
-      description: "Sets the button text",
-    },
-    "btn-click": {
+    click: {
       description: "Fires every time the button is clicked",
       table: { type: { summary: "No payload" } },
-      action: "btn-clicked",
+      action: "clicked",
     },
     type: {
       description: "Sets the button type",
@@ -31,7 +28,7 @@ export default {
 const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
   components: { MyButton },
-  template: '<my-button v-bind="$props" />',
+  template: '<my-button v-bind="$props" @click="click">Button</my-button>',
 });
 
 export const Solid = Template.bind({});

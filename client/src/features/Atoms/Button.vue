@@ -1,6 +1,6 @@
 <template>
-  <button :type="type" @click="$emit('btn-click')" :class="classObject">
-    {{ label }}
+  <button :type="type" @click="$emit('click')" :class="classObject">
+    <slot></slot>
   </button>
 </template>
 
@@ -8,7 +8,6 @@
 export default {
   name: "Button",
   props: {
-    label: { type: String, required: true, default: "Button" },
     variant: {
       type: String,
       default: "solid",
@@ -50,7 +49,7 @@ button {
   color: colors.$textColor;
   font-weight: 600;
   line-height: 1.5rem;
-  min-width: 7.5rem;
+  min-width: 8rem;
   transition: all 0.15s;
 
   &.solid {

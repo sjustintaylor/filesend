@@ -1,5 +1,6 @@
 import { create } from "@storybook/theming/create";
 
+import "@/main.js";
 const theme = create({
   base: "light",
   // appBg: "#F7F7FC",

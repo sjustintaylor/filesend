@@ -12,9 +12,12 @@
       errorMessage="Your email address is required"
     />
     <div id="controls">
-      <Button variant="solid" label="Let's do this" :btn-click="login" />
+      <Button variant="solid" @click="login">
+        <Spinner v-if="isLoading" />
+        {{ isLoading ? "" : "Let's do this" }}
+      </Button>
       <p>Don't have an account?</p>
-      <Button variant="outline" label="Sign me up" :btn-click="signup" />
+      <Button variant="outline" @click="signup"> Sign me up</Button>
     </div>
   </Panel>
 </template>
@@ -23,21 +26,31 @@
 import Button from "@/features/Atoms/Button.vue";
 import TextInput from "@/features/Atoms/TextInput.vue";
 import Panel from "@/features/Atoms/Panel.vue";
+import Spinner from "@/features/Atoms/Spinner";
 export default {
   name: "SignIn",
   components: {
     Button,
     TextInput,
     Panel,
+    Spinner,
   },
   data: function() {
     return {
       email: "",
+      isLoading: false,
     };
   },
   methods: {
     async login() {
-      console.log("Log in");
+      this.isLoading = !this.isLoading;
+      // this.isLoading = true;
+      // try {
+      // } catch (error) {
+      //   console.error(error);
+      // }
+      // this.isLoading = false;
+      // Show the email modal
     },
     signup() {
       console.log("Sign up");
@@ -57,9 +70,11 @@ export default {
   justify-content: flex-end;
   margin-top: 2rem;
   align-items: flex-end;
-
   & p {
     margin-top: 2rem;
+  }
+  & #spinner {
+    margin-right: 0.5rem;
   }
 }
 

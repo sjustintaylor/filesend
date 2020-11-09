@@ -7,7 +7,7 @@ export default {
     input: {
       description: "Fired when the input changes. Can be used with v-model",
       table: { type: { summary: "string" } },
-      action: "clicked",
+      action: "input",
     },
     value: {
       description: "The initial value of the input",
@@ -52,7 +52,7 @@ export default {
 const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
   components: { TextInput },
-  template: '<text-input v-bind="$props" />',
+  template: '<text-input v-bind="$props" @input="input"/>',
 });
 
 export const Text = Template.bind({});
