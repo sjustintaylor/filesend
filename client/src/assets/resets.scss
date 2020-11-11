@@ -1,9 +1,14 @@
+@use './responsive.scss' as breakpoints;
+@use './colors.scss' as colors;
 * {
   box-sizing: border-box;
 }
 
 html,
 body {
+  @media screen and (min-width: breakpoints.$large) {
+    background-color: colors.$textColor;
+  }
   height: 100%;
   width: 100%;
   margin: 0;

@@ -7,6 +7,7 @@
 
 <style lang="scss">
 @use '@/assets/resets';
+@use "@/assets/typography";
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

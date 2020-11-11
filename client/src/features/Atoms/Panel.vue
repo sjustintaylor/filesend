@@ -1,5 +1,5 @@
 <template>
-  <div id="panel">
+  <div class="panel">
     <slot></slot>
   </div>
 </template>
@@ -13,7 +13,7 @@ export default {
 <style scoped lang="scss">
 @use "@/assets/colors" as colors;
 @use "@/assets/responsive" as breakpoints;
-#panel {
+.panel {
   font-family: inherit;
   padding: 2rem;
   background-color: colors.$panelColor;
