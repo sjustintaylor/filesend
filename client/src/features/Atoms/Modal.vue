@@ -1,7 +1,7 @@
 <template>
-  <div id="modal">
-    <Panel class="modal__content">
-      <button class="close" @click="$emit('click')">
+  <div id="modal" @click.self="$emit('close')">
+    <Panel class="modal__content" v-on:click.stop>
+      <button class="close" @click.stop="$emit('close')">
         <span class="material-icons">
           close
         </span>
@@ -13,13 +13,12 @@
 
 <script>
 import Panel from "@/features/Atoms/Panel.vue";
-import Button from "@/features/Atoms/Button.vue";
+// import Button from "@/features/Atoms/Button.vue";
 export default {
   name: "Modal",
   components: {
-    Panel,
-    Button,
-  },
+    Panel
+  }
 };
 </script>
 
@@ -67,6 +66,7 @@ export default {
   }
 }
 .close {
+  margin: 0;
   align-self: flex-end;
   text-align: right;
   width: 3rem;

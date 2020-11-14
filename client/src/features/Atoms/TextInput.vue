@@ -7,7 +7,9 @@
       v-model="input"
       @blur="touched = true"
       :class="{
-        invalid: setError || (touched && isRequired && input.length === 0),
+        invalid:
+          (setError && input.length === 0) ||
+          (touched && isRequired && input.length === 0)
       }"
       @input="$emit('input', $event.target.value)"
     />
@@ -20,7 +22,7 @@
     <span
       v-if="
         (errorMessage && isRequired && touched && input.length === 0) ||
-          setError
+          (setError && input.length === 0)
       "
       >{{ errorMessage }}</span
     >
@@ -34,38 +36,38 @@ export default {
     value: {
       type: String,
       required: false,
-      default: "",
+      default: ""
     },
     type: {
       type: String,
       required: true,
       default: "text",
-      validator: (value) => ["email", "text", "password"].includes(value),
+      validator: value => ["email", "text", "password"].includes(value)
     },
     placeholder: {
       type: String,
-      default: "",
+      default: ""
     },
     required: {
       type: Boolean,
       required: true,
-      default: false,
+      default: false
     },
     errorMessage: {
       type: String,
       required: false,
-      default: "",
+      default: ""
     },
     setError: {
       type: Boolean,
       required: false,
-      default: false,
-    },
+      default: false
+    }
   },
   data: function() {
     return {
       input: "",
-      touched: false,
+      touched: false
     };
   },
   mounted() {
@@ -74,13 +76,13 @@ export default {
   computed: {
     labelClasses: function() {
       return {
-        hold: this.input.length > 0,
+        hold: this.input.length > 0
       };
     },
     isRequired: function() {
       return Boolean(this.required);
-    },
-  },
+    }
+  }
 };
 </script>
 

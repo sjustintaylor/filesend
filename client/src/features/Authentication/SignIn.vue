@@ -1,25 +1,30 @@
 <template>
-  <Panel id="panel">
-    <h3>FileSend</h3>
-    <p class="text_large">Easy file sharing with simple access controls.</p>
-    <h4>Log In</h4>
-    <TextInput
-      v-model="email"
-      id="email"
-      :required="true"
-      placeholder="Email Address"
-      type="email"
-      errorMessage="Your email address is required"
-    />
-    <div id="controls">
-      <Button variant="solid" @click="login">
-        <Spinner v-if="isLoading" />
-        {{ isLoading ? "" : "Let's do this" }}
-      </Button>
-      <p>Don't have an account?</p>
-      <Button variant="outline" @click="signup"> Sign me up</Button>
-    </div>
-  </Panel>
+  <div>
+    <Panel id="panel">
+      <h3>FileSend</h3>
+      <p class="text_large">Easy file sharing with simple access controls.</p>
+      <h4>Log In</h4>
+      <TextInput
+        v-model="email"
+        id="email"
+        :required="true"
+        placeholder="Email Address"
+        type="email"
+        errorMessage="Your email address is required"
+      />
+      <div id="controls">
+        <Button variant="solid" @click="login">
+          <Spinner v-if="isLoading" />
+          {{ isLoading ? "" : "Let's do this" }}
+        </Button>
+        <p>Don't have an account?</p>
+        <Button variant="outline" @click="signup"> Sign me up</Button>
+      </div>
+    </Panel>
+    <transition name="fade">
+      <CheckEmail v-if="showModal" @close="showModal = false" />
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -27,6 +32,8 @@ import Button from "@/features/Atoms/Button.vue";
 import TextInput from "@/features/Atoms/TextInput.vue";
 import Panel from "@/features/Atoms/Panel.vue";
 import Spinner from "@/features/Atoms/Spinner";
+import CheckEmail from "@/features/Authentication/CheckEmail";
+
 export default {
   name: "SignIn",
   components: {
@@ -34,28 +41,30 @@ export default {
     TextInput,
     Panel,
     Spinner,
+    CheckEmail
   },
   data: function() {
     return {
       email: "",
       isLoading: false,
+      showModal: false
     };
   },
   methods: {
     async login() {
-      this.isLoading = !this.isLoading;
-      // this.isLoading = true;
-      // try {
-      // } catch (error) {
-      //   console.error(error);
-      // }
-      // this.isLoading = false;
-      // Show the email modal
+      this.isLoading = true;
+      try {
+        console.log("hello");
+      } catch (error) {
+        console.error(error);
+      }
+      this.isLoading = false;
+      this.showModal = true;
     },
     signup() {
-      console.log("Sign up");
-    },
-  },
+      this.$router.push({ name: "SignUp" });
+    }
+  }
 };
 </script>
 
@@ -85,6 +94,9 @@ h3 {
   line-height: 0;
   text-decoration-line: underline;
 }
+h4 {
+  text-align: left;
+}
 @media screen and (min-width: breakpoints.$medium) {
   #email {
     margin-left: 2rem;
@@ -99,5 +111,12 @@ h3 {
     max-width: breakpoints.$small;
     margin-top: 4.5rem;
   }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
