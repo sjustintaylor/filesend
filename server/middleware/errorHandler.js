@@ -3,12 +3,12 @@ const createError = require("http-errors");
 const errorHandler = (error, req, res, next) => {
   // Set status code
   res.status(error.status || 500);
-  console.log(error);
+  console.error(error);
   // Sends response
   res.json({
     status: error.status,
     message: error.message,
-    stack: process.env.NODE_ENV === "dev" ? error.stack : "",
+    stack: process.env.NODE_ENV === "development" ? error.stack : "",
   });
 };
 
