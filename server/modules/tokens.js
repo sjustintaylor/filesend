@@ -4,7 +4,8 @@ const { default: generateKeyPair } = require("jose/util/generate_key_pair");
 const NodeCache = require("node-cache");
 const { SHA3 } = require("sha3");
 const { v4: uuidv4 } = require("uuid");
-const fs = require("fs");
+const fs = require("fs/promises");
+const fsSync = require("fs");
 const crypto = require("crypto");
 
 // Module fields
@@ -15,10 +16,17 @@ const cache = new NodeCache();
 const hash = new SHA3(256);
 
 // Module methods
-const config = async (keypath = false, algorithm = "EdDSA") => {
+
+/**
+ * Initialises the module, and loads/generates the keypair
+ * @param {String} keypath the location to store the private key at
+ * @param {String} algorithm  the key algorithm to use
+ */
+const config = async (keypath, algorithm = "EdDSA") => {
   if (!keypath) throw new Error("KEY_PATH_REQUIRED");
   alg = algorithm;
-  const keyExists = fs.existsSync(keypath);
+  const keyExists = fsSync.existsSync(keypath);
+
   if (keyExists) {
     const rawPrivateKey = await fs.readFile(keypath);
     privateKey = crypto.createPrivateKey(rawPrivateKey);
@@ -29,7 +37,7 @@ const config = async (keypath = false, algorithm = "EdDSA") => {
     );
     await fs.writeFile(
       keypath,
-      privateKey.export({ type: "pem", format: "pkcs8" })
+      private.export({ type: "pkcs8", format: "pem" })
     );
     publicKey = public;
     privateKey = private;
@@ -37,10 +45,18 @@ const config = async (keypath = false, algorithm = "EdDSA") => {
   return true;
 };
 
+/**
+ * Generates a JWT
+ * @param {String} subject the sub claim.
+ * @param {Boolean} singleUse whether or not the token can be used more than once
+ * @param {Number} expiresIn the length of time in milliseconds that the token will be valid for (from the current time)
+ * @param {Object} payloadClaims Any custom claims to add to the token
+ * @returns the signed token
+ */
 const generate = async (
-  subject = false,
+  subject,
   singleUse = false,
-  expiresIn = false,
+  expiresIn,
   payloadClaims = {}
 ) => {
   if (!key) throw new Error("KEY_NOT_SET");
@@ -67,7 +83,12 @@ const generate = async (
   return jwt;
 };
 
-const verify = async (token = false) => {
+/**
+ * Verifies a JWT
+ * @param {String} token the token to verify
+ * @returns the verified payload of the token
+ */
+const verify = async (token) => {
   if (!token) throw new Error("TOKEN_REQUIRED");
   if (!key) throw new Error("KEY_NOT_SET");
 
