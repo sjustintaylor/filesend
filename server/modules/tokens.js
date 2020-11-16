@@ -4,7 +4,7 @@ const { default: generateKeyPair } = require("jose/util/generate_key_pair");
 const NodeCache = require("node-cache");
 const { SHA3 } = require("sha3");
 const { v4: uuidv4 } = require("uuid");
-const fs = require("fs/promises");
+const fs = require("fs").promises;
 const fsSync = require("fs");
 const crypto = require("crypto");
 
@@ -59,16 +59,18 @@ const generate = async (
   expiresIn,
   payloadClaims = {}
 ) => {
-  if (!key) throw new Error("KEY_NOT_SET");
+  if (!privateKey) throw new Error("PRIVATE_KEY_NOT_SET");
   if (!expiresIn) {
     // Expires in 5 minutes by default
-    expiresIn = new Date() + 5 * 60 * 1000;
+    expiresIn = Date.now() + 5 * 60 * 1000;
+  } else {
+    expiresIn = Date.now() + expiresIn;
   }
   let jti;
   const token = new SignJWT(payloadClaims)
     .setProtectedHeader({ alg })
     .setIssuedAt()
-    .setExpiryTime(expiresIn)
+    .setExpirationTime(expiresIn)
     .setSubject(subject);
 
   if (singleUse) {
@@ -90,7 +92,7 @@ const generate = async (
  */
 const verify = async (token) => {
   if (!token) throw new Error("TOKEN_REQUIRED");
-  if (!key) throw new Error("KEY_NOT_SET");
+  if (!publicKey) throw new Error("PUBLIC_KEY_NOT_SET");
 
   // Check for jti claim
   hash.update(token);
