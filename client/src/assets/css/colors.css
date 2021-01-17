@@ -3,10 +3,21 @@
 
   /* Buttons */
   --focus-color: #ded3ff;
-  --primary__hover: #2a00a2;
-  --primary__active: #4b0aff;
-  --solid__text-color: #f7f7fc;
+  --primary--hover: #2a00a2;
+  --primary--active: #4b0aff;
+  --solid--text-color: #f7f7fc;
 
   /* Panels */
   --panel-bg: #fcfcfc;
+
+  /* Inputs */
+  --input--bg: #eff0f6;
+  --input--border: #14142b;
+  --input--success: #00ba88;
+  --input--error: #ed2e7e;
+  --input--error-bg: #fff2f7;
+  --input--caption: #6e7191;
+  --input--placeholder: #a0a3bd;
+  --input--text: #14142b;
+  --input--success-bg: #f3fdfa;
 }
