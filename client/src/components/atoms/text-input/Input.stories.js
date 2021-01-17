@@ -21,3 +21,11 @@ ErrorHandling.args = {
   required: true,
   type: "email",
 };
+export const InitialValue = Template.bind({});
+InitialValue.args = {
+  placeholder: "Hello",
+  errorMessage: "Nice error message",
+  required: true,
+  type: "text",
+  initialValue: "World",
+};

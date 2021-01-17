@@ -20,7 +20,7 @@ export const Input = ({
         className={[
           "input__input",
           `${
-            required && touched && !focus && text.length === 0
+            required && touched && !focus && text.length === initialValue.length
               ? "input__input--left-blank"
               : ""
           }`,
@@ -44,7 +44,7 @@ export const Input = ({
           {placeholder}
         </label>
       )}
-      {required && touched && !focus && text.length === 0 && (
+      {required && touched && !focus && text.length === initialValue.length && (
         <span className="input__error-message">{errorMessage}</span>
       )}
     </div>
