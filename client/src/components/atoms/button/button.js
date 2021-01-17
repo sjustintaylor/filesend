@@ -1,10 +1,20 @@
 import React from "react";
 import PropTypes from "prop-types";
-// import "./button.scss";
+import "./button.css";
 
-export const Button = ({ label, type, onClick, ...props }) => {
+export const Button = ({
+  label,
+  btnStyle,
+
+  backgroundColor,
+  ...props
+}) => {
   return (
-    <button type="button" {...props}>
+    <button
+      type="button"
+      className={["button", `button--${btnStyle}`].join(" ")}
+      {...props}
+    >
       {label}
     </button>
   );
@@ -12,7 +22,7 @@ export const Button = ({ label, type, onClick, ...props }) => {
 
 Button.propTypes = {
   label: PropTypes.string.isRequired,
-  btnStyle: PropTypes.oneOf(["text", "outline", "solid"]),
+  btnStyle: PropTypes.oneOf(["solid", "outline", "text"]),
   onClick: PropTypes.func,
 };
 Button.defaultProps = {

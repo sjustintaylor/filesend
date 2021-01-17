@@ -6,6 +6,9 @@ module.exports = {
     "@storybook/addon-essentials",
     "@storybook/preset-create-react-app",
   ],
+  resolve: {
+    modules: [path.resolve(__dirname, "../src"), "node_modules"],
+  },
   webpackFinal: async (config, { configType }) => {
     // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
     // You can change the configuration based on that.

@@ -1,5 +1,13 @@
 import logo from "./logo.svg";
 import "./App.css";
+
+// Setup theming
+import "assets/css/responsive.scss";
+import "assets/css/colors.css";
+import "assets/css/typography.css";
+import "assets/css/resets.css";
+
+// Components
 import Button from "components/atoms/button";
 
 function App() {

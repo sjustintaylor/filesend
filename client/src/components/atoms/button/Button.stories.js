@@ -1,9 +1,15 @@
 import React from "react";
-
 import Button from "components/atoms/button";
 const config = {
   title: "Atoms/Button",
   component: Button,
+  argTypes: {
+    onClick: {
+      description: "Fires every time the button is clicked",
+      table: { type: { summary: "No payload" } },
+      action: "clicked",
+    },
+  },
 };
 export default config;
 

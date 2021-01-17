@@ -1,0 +1,56 @@
+.button {
+  font-family: inherit;
+  border-radius: 40px;
+  padding: 8px 16px;
+  color: var(--primary);
+  font-weight: 600;
+  line-height: 1.5rem;
+  min-width: 8rem;
+  transition: all 0.15s;
+  border: 2px solid transparent;
+}
+
+.button--solid {
+  color: var(--solid__text-color);
+  background-color: var(--primary);
+}
+.button--solid:hover,
+.button--solid:focus {
+  border: 2px solid var(--primary__hover);
+  background-color: var(--primary__hover);
+}
+.button--solid:active {
+  background-color: var(--primary__active);
+  border-color: var(--primary__active);
+}
+
+.button--outline {
+  background-color: transparent;
+  border: 2px solid var(--primary);
+}
+.button--outline:hover {
+  border: 2px solid var(--primary__hover);
+  background-color: var(--solid__text-color);
+}
+.button--outline:focus {
+  background-color: var(--focus-color);
+  color: var(--primary__hover);
+}
+.button--outline:active {
+  background-color: var(--primary__hover);
+  border-color: var(--primary__hover);
+  color: var(--solid__text-color);
+}
+.button--text {
+  border: none;
+  background-color: transparent;
+}
+.button--text:hover {
+  color: var(--primary__hover);
+}
+.button--text:active {
+  color: var(--solid__text-color);
+}
+.button--text:focus {
+  font-weight: bold;
+}

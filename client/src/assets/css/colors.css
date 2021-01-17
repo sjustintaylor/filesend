@@ -1,0 +1,12 @@
+:root {
+  --primary: #5f2eea;
+
+  /* Buttons */
+  --focus-color: #ded3ff;
+  --primary__hover: #2a00a2;
+  --primary__active: #4b0aff;
+  --solid__text-color: #f7f7fc;
+
+  /* Panels */
+  --panel-bg: #fcfcfc;
+}
