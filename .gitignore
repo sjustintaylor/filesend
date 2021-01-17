@@ -69,3 +69,6 @@ uploads/
 
 jwt-dev-key.pem
 jwt-dev-pubkey.pem
+
+client-old/
+sb-react/
