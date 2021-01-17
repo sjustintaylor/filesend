@@ -1,10 +1,8 @@
-@use "assets/css/responsive" as breakpoints;
-
 .panel {
   font-family: inherit;
   padding: 2rem;
   background-color: var(--panel-bg);
-  @media screen and (max-width: breakpoints.$small) {
+  @media screen and (max-width: $small) {
     padding: 1rem;
   }
 }
