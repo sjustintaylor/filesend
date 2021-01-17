@@ -2,18 +2,19 @@
   font-family: inherit;
   padding: 2rem;
   background-color: var(--panel-bg);
-  @media screen and (max-width: $small) {
+}
+@media screen and (max-width: 576px) {
+  .panel {
     padding: 1rem;
   }
 }
-
 @media screen and (max-width: 768px) {
-  .panel-responsive {
+  .panel {
     width: 100%;
   }
 }
 @media screen and (min-width: 992px) {
-  .panel-responsive {
+  .panel {
     max-width: 960px;
     margin-left: auto;
     margin-right: auto;

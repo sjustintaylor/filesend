@@ -1,5 +1,5 @@
 import { create } from "@storybook/theming/create";
-import "assets/css/responsive.scss";
+import "assets/css/responsive.css";
 import "assets/css/colors.css";
 import "assets/css/typography.css";
 import "assets/css/resets.css";
