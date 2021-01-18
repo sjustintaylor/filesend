@@ -13,7 +13,7 @@ const config = {
 };
 export default config;
 
-const Template = (args) => <Button {...args} />;
+const Template = (args) => <Button {...args}>Button</Button>;
 
 export const Solid = Template.bind({});
 Solid.args = {

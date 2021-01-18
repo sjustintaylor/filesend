@@ -6,6 +6,7 @@
   font-weight: 600;
   line-height: 1.5rem;
   min-width: 8rem;
+  min-height: 2.75rem;
   transition: all 0.15s;
   border: 2px solid transparent;
 }

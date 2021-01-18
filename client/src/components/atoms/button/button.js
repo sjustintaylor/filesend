@@ -2,26 +2,22 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./button.css";
 
-export const Button = ({
-  label,
-  btnStyle,
-
-  backgroundColor,
-  ...props
-}) => {
+export const Button = ({ btnStyle, backgroundColor, className, ...props }) => {
   return (
     <button
       type="button"
-      className={["button", `button--${btnStyle}`].join(" ")}
-      {...props}
+      className={[
+        "button",
+        `button--${btnStyle}`,
+        className ? className : "",
+      ].join(" ")}
     >
-      {label}
+      {props.children}
     </button>
   );
 };
 
 Button.propTypes = {
-  label: PropTypes.string.isRequired,
   btnStyle: PropTypes.oneOf(["solid", "outline", "text"]),
   onClick: PropTypes.func,
 };

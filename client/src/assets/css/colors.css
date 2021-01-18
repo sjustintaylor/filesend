@@ -1,5 +1,7 @@
 :root {
   --primary: #5f2eea;
+  --text--color: #4e4b66;
+  --heading--color: #14142b;
 
   /* Buttons */
   --focus-color: #ded3ff;
