@@ -1,0 +1,91 @@
+.input {
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  font-family: inherit;
+  max-width: 25rem;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 2rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  color: var(--input--text);
+  transition: 0.2s ease all;
+  position: relative;
+}
+.input__input {
+  font-family: inherit;
+  display: block;
+  box-sizing: border-box;
+  transition: 0.2s ease all;
+  height: 3.5rem;
+  border-radius: 1rem;
+  background-color: var(--input--bg);
+  border: 2px solid var(--input--bg);
+  width: 100%;
+  padding-left: 1.75rem;
+  padding-right: 3.25rem;
+  padding-top: 1.25rem;
+  font-size: 1rem;
+}
+.input__input:active,
+.input__input:focus {
+  border: 2px solid var(--input--border);
+  background-color: transparent;
+}
+.input__input:focus ~ label {
+  top: 0;
+  font-weight: bold;
+  font-size: 0.875rem;
+}
+.input__input:not(:placeholder-shown):invalid {
+  border: 2px solid var(--input--error);
+  background-color: var(--input--error-bg);
+}
+.input__input--left-blank {
+  border: 2px solid var(--input--error);
+  background-color: var(--input--error-bg);
+}
+.input__clear-btn {
+  margin-left: -3rem;
+  width: 3rem;
+  font-size: 24px;
+  padding: 0;
+  background-color: transparent;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  border-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 1rem;
+  color: var(--input--placeholder);
+  transition: 0.2s ease all;
+}
+.input__clear-btn:hover,
+.input__clear-btn:focus {
+  color: var(--input--caption);
+}
+.input__clear-btn:active {
+  color: var(--input--text);
+}
+.input__error-message {
+  padding-left: 1rem;
+  max-width: 100%;
+  flex-basis: 100%;
+}
+.input__placeholder {
+  transition: 0.2s ease all;
+  font-size: 1rem;
+  top: 0.875rem;
+  left: 1.75rem;
+  position: absolute;
+  pointer-events: none;
+  color: var(--input--placeholder);
+}
+.input__placeholder--hold-up {
+  top: 0;
+  font-weight: bold;
+  font-size: 0.875rem;
+}
