@@ -11,6 +11,7 @@ export const Button = ({ btnStyle, backgroundColor, className, ...props }) => {
         `button--${btnStyle}`,
         className ? className : "",
       ].join(" ")}
+      {...props}
     >
       {props.children}
     </button>

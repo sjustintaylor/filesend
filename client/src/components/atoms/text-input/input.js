@@ -10,11 +10,11 @@ export const Input = ({
   errorMessage,
   required,
   className,
+  text,
+  updateText,
   ...props
 }) => {
-  const { text, updateText, touched, updateFocus, focus } = useHooks(
-    initialValue
-  );
+  const { touched, updateFocus, focus } = useHooks(initialValue);
 
   return (
     <div className={className}>

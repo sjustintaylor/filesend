@@ -3,11 +3,13 @@ import useHooks from "./hooks";
 import "./authentication.css";
 import Panel from "components/atoms/panel";
 import Input from "components/atoms/text-input";
+import { useInputHooks } from "components/atoms/text-input";
 import Button from "components/atoms/button";
 import PuffLoader from "react-spinners/PuffLoader";
 
 export const Authentication = ({ ...props }) => {
   const { loading } = useHooks();
+  const { text, updateText } = useInputHooks();
   return (
     <Panel className="auth">
       <h3 className="auth__heading">FileSend</h3>
@@ -22,10 +24,13 @@ export const Authentication = ({ ...props }) => {
         errorMessage="Necessary so we can send you a magic link to continue logging in"
         placeholder="Email address"
         className="auth__email"
+        text={text}
+        updateText={updateText}
       />
       <Button
         variant="solid"
-        className="auth__control auth__control--margin-top "
+        className="auth__control auth__control--margin-top"
+        onClick={() => console.log(text)}
       >
         {loading ? (
           <div className="auth__spinner">
