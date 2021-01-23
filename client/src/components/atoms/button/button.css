@@ -10,7 +10,12 @@
   transition: all 0.15s;
   border: 2px solid transparent;
 }
-
+.button--spinner {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+}
 .button--solid {
   color: var(--solid--text-color);
   background-color: var(--primary);

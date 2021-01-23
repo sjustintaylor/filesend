@@ -16,12 +16,7 @@
 .auth__control--margin-top {
   margin-top: 2rem;
 }
-.auth__spinner {
-  display: flex;
-  flex-direction: row;
-  align-content: center;
-  justify-content: center;
-}
+
 /* Media Queries */
 @media screen and (min-width: 576px) {
   .auth {

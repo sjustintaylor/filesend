@@ -16,18 +16,31 @@ export default config;
 const Template = (args) => <Button {...args}>Button</Button>;
 
 export const Solid = Template.bind({});
-Solid.args = {
-  label: "Button",
-};
+Solid.args = {};
 
 export const Outline = Template.bind({});
 Outline.args = {
   btnStyle: "outline",
-  label: "Button",
 };
 
 export const Text = Template.bind({});
 Text.args = {
   btnStyle: "text",
-  label: "Button",
+};
+
+export const SolidLoading = Template.bind({});
+SolidLoading.args = {
+  loading: true,
+};
+
+export const OutlineLoading = Template.bind({});
+OutlineLoading.args = {
+  loading: true,
+  btnStyle: "outline",
+};
+
+export const TextLoading = Template.bind({});
+TextLoading.args = {
+  loading: true,
+  btnStyle: "text",
 };
