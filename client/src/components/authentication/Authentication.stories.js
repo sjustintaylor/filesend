@@ -8,5 +8,5 @@ export default config;
 
 const Template = (args) => <Authentication {...args} />;
 
-export const Default = Template.bind({});
-Default.args = {};
+export const LogInScreen = Template.bind({});
+LogInScreen.args = {};

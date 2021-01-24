@@ -4,7 +4,7 @@ import PrivateRoute from "components/router/components/privateroute";
 import Authentication from "components/authentication";
 import { useParams } from "react-router-dom";
 
-export default Router = () => {
+export const Router = () => {
   const params = useParams();
   return (
     <BrowserRouter>

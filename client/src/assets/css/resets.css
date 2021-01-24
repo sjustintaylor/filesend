@@ -14,10 +14,5 @@ body {
   font-size: 100%;
   font-family: "Poppins", sans-serif;
   font-weight: 400;
-}
-@media screen and (min-width: 992px) {
-  html,
-  body {
-    background-color: var(--solid--text-color);
-  }
+  background-color: var(--solid--text-color);
 }

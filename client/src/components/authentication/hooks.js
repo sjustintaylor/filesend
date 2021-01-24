@@ -12,8 +12,11 @@ export default (token) => {
 
   useEffect(() => {
     if (loginState === "magicLink") {
+      setLoading(true);
       sendMagicLink(setLoading, email).then(() => {
+        setLoading(false);
         showModal();
+        setLoginState(undefined);
       });
     } else if (loginState === "getToken" && token) {
       exchangeToken(setLoading, token);
