@@ -19,7 +19,7 @@ export const Authentication = ({ token, ...props }) => {
         <LoggingIn />
       ) : (
         <>
-          {modalVisible && <CheckEmail />}
+          {modalVisible && <CheckEmail showModal={showModal} />}
           <Login
             modalVisible={modalVisible}
             loading={loading}

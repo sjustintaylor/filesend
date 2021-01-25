@@ -16,7 +16,6 @@ export const Login = ({
 }) => {
   const { text, updateText } = useInputHooks();
   return (
-    <>
       <Panel className="auth">
         <h3 className="auth__heading">FileSend</h3>
         <p className="text_large">
@@ -46,7 +45,7 @@ export const Login = ({
           for you.
         </p>
       </Panel>
-    </>
+
   );
 };
 
