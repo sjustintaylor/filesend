@@ -4,7 +4,14 @@ import "./panel.css";
 
 export const Panel = ({ className, ...props }) => {
   return (
-    <div className={["panel", className ? className : ""].join(" ")}>
+    <div
+      className={["panel", className ? className : ""].join(" ")}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        // e.nativeEvent.stopImmediatePropagation();
+      }}
+    >
       {props.children}
     </div>
   );

@@ -1,0 +1,15 @@
+.checkEmail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: red;
+}
+
+.checkEmail--heading {
+  text-align: center;
+}
+
+.checkEmail--text__center {
+  text-align: center;
+}
