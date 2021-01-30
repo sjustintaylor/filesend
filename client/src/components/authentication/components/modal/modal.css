@@ -8,12 +8,31 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-content: space-around;
+  justify-content: center;
   flex: 1;
 }
-
+@media screen and (max-width: 768px) {
+  .modal {
+    justify-content: flex-start;
+  }
+}
 .modal--content {
   width: 100%;
   min-height: 25vh;
+}
+
+.modal--close {
+  position: absolute;
+  top: 1rem;
+  right: -1rem;
+  color: var(--text--color);
+}
+.modal--close-icon {
+  color: var(--input--placeholder);
+  transition: all 0.15s ease-in-out;
+}
+.modal--close-icon:hover,
+.modal--close-icon:active {
+  color: var(--text--color);
 }

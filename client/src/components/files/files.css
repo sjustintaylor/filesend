@@ -1,0 +1,21 @@
+.files {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  flex: 1;
+}
+.files--panel {
+  width: 100%;
+}
+.files--heading {
+  margin: 0;
+}
+.files--downloads {
+  width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+.files--upload {
+  margin-top: 1rem;
+}

@@ -1,14 +1,7 @@
-.checkEmail {
+.logging-in {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.checkEmail--heading {
-  text-align: center;
-}
-
-.checkEmail--text__center {
   text-align: center;
 }

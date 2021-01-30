@@ -1,21 +1,26 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import PrivateRoute from "components/router/components/privateroute";
-import Authentication from "components/authentication";
 import { useParams } from "react-router-dom";
+import { isLoggedIn } from "modules/authentication";
+
+// Component imports
+import Authentication from "components/authentication";
+import Files from "components/files";
+import PrivateRoute from "components/router/components/privateroute";
 
 export const Router = () => {
-  const params = useParams();
+  const { token } = useParams();
   return (
     <BrowserRouter>
       {/* Open routes */}
       <Switch>
-        <Route path="/authenticate" children={<Authentication />} />
+        <Route
+          path="/"
+          children={isLoggedIn() ? <Files /> : <Authentication />}
+        />
         <Route
           path="/authenticate/:token"
-          children={
-            <Authentication token={params.token ? params.token : false} />
-          }
+          children={<Authentication token={token ? token : false} />}
         />
       </Switch>
       {/* Protected routes */}
@@ -23,3 +28,7 @@ export const Router = () => {
     </BrowserRouter>
   );
 };
+/**
+ * /
+ *
+ */

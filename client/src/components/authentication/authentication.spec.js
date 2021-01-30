@@ -5,6 +5,6 @@ import useHooks from "./hooks";
 // Inject a mock of the authentication module.
 
 describe("Authentication component hooks", () => {
-  // Modal hooks
-  // Authentication hooks
+  it("should show the check email modal on login", () => {});
+  it("should show the logging in modal when exchanging tokens", () => {});
 });

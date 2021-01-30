@@ -15,6 +15,7 @@ export default (initialValue) => {
     if (!touched) setTouched(true);
     setFocus(e.type === "focus" ? true : false);
   };
+
   // Set initial value
   useEffect(() => {
     setText(initialValue ? initialValue : "");

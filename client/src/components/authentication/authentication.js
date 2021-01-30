@@ -1,13 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import useHooks from "./hooks";
-
 import Login from "./components/login";
 import LoggingIn from "./components/loggingIn";
 import CheckEmail from "components/authentication/components/checkEmail";
+
 export const Authentication = ({ token, ...props }) => {
   const {
     loading,
+    email,
     setEmail,
     setLoginState,
     modalVisible,
@@ -19,11 +20,18 @@ export const Authentication = ({ token, ...props }) => {
         <LoggingIn />
       ) : (
         <>
-          {modalVisible && <CheckEmail showModal={showModal} />}
+          {modalVisible && (
+            <CheckEmail
+              showModal={showModal}
+              setLoginState={setLoginState}
+              loading={loading}
+            />
+          )}
           <Login
             modalVisible={modalVisible}
             loading={loading}
             setLoginState={setLoginState}
+            email={email}
             setEmail={setEmail}
           />
         </>
