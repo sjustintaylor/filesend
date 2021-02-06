@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  sendMagicLink,
-  exchangeToken,
-} from "components/authentication/actions";
+import { getMagicLink, getAuthTokens } from "modules/authentication";
 import { useInputHooks } from "components/atoms/text-input";
 import { useHistory } from "react-router-dom";
 
@@ -18,7 +15,7 @@ export default (token) => {
       setLoginState(undefined);
     } else if (loginState === "magicLink" && testEmail(email)) {
       setLoading(true);
-      sendMagicLink(setLoading, email).then(() => {
+      getMagicLink(email).then(() => {
         setLoading(false);
         setLoginState(undefined);
         // Leaves CheckEmail modal open if resending
@@ -28,7 +25,7 @@ export default (token) => {
       });
     } else if (loginState === "getToken" && token) {
       setLoading(true);
-      exchangeToken(setLoading, token).then(() => {
+      getAuthTokens(token).then(() => {
         setLoading(false);
         history.push("/");
       });
