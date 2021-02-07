@@ -44,6 +44,10 @@ const deleteRecord = async (collection, id) => {
 const getRecords = async (collection, filter) => {
   try {
     const records = await db.collection(collection).find(filter);
+    if (records.count() === 0) {
+      return false;
+    }
+    return records.toArray();
   } catch (error) {
     console.error(error);
     throw new Error(error);

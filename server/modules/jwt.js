@@ -1,4 +1,9 @@
 const fs = require("fs");
-const { default: fromKeyLike } = require("jose/jwk/from_key_like");
+const crypto = require("crypto");
+const rawKey = fs.readFileSync("./private-key.pem", {
+  encoding: "utf8",
+  flag: "r",
+});
 
-// exports.key =
+const privateKey = crypto.createPrivateKey(rawKey);
+module.exports = privateKey;

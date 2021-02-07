@@ -8,7 +8,9 @@ const createError = require("http-errors");
 
 exports.getSession = async (email) => {
   try {
-    return await getRecords("sessions", { email });
+    const session = await getRecords("sessions", { email: email });
+    if (!session) return false;
+    return session[0];
   } catch (error) {
     console.error(error);
     throw createError(500, error.message);
@@ -22,7 +24,7 @@ exports.createSession = async (session) => {
     throw createError(500, error.message);
   }
 };
-exports.updateSession = async () => {
+exports.updateSession = async (session) => {
   try {
   } catch (error) {
     console.error(error);

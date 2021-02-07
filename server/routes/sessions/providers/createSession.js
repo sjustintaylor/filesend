@@ -1,8 +1,12 @@
 const { getSession, createSession, updateSession } = require("../model");
-const { newSessionRequest } = require("../schemas");
+const { newSessionRequest, validSessionModel } = require("../schemas");
 const asyncHandler = require("express-async-handler");
 const createError = require("http-errors");
 const addToDate = require("date-fns/add");
+const { v4: uuidv4 } = require("uuid");
+const { default: CompactSign } = require("jose/jws/compact/sign");
+const key = require("../../../modules/jwt");
+const email = require("../../../modules/email");
 
 module.exports = asyncHandler(async (req, res) => {
   // Validate request
@@ -15,17 +19,40 @@ module.exports = asyncHandler(async (req, res) => {
     });
   // Check for existing email record
   const record = await getSession(values.email);
-  // Create new record or update existing record
-  if (!record) await createSession(generateSession(values.email));
-  // Create a token and assemble the link
+  console.log(record);
+  // Create session
+  let session;
+
+  if (!record) {
+    session = await generateSession(values.email);
+    await createSession(session);
+  } else {
+    session = record;
+    await validSessionModel.validate(record).catch(async (error) => {
+      session = await generateSession(values.email);
+      updateSession(session);
+    });
+  }
   // Email the user
-  res.status(200).send({});
+  await email.sendMail({
+    from: process.env.EMAIL_USER,
+    to: values.email,
+    subject: "Continue logging into Filesend",
+    html: `
+    <p>Click here to continue logging into Filesend: <a href="${process.env.LINK_BASE_URL}/authenticate/${session.linkToken}"</p>
+    `,
+  });
+  res.status(200).send();
 });
 
-const generateSession = (email) => {
+const generateSession = async (email) => {
+  const encoder = new TextEncoder();
+  const token = await new CompactSign(encoder.encode(uuidv4()))
+    .setProtectedHeader({ alg: "ES256" })
+    .sign(key);
   return {
     email,
-    linkToken: "",
+    linkToken: token,
     linkExpiry: addToDate(new Date(), { minutes: 60 }),
   };
 };
