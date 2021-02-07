@@ -1,10 +1,10 @@
-const createLink = require("./exchangeTokens");
+const exchangeTokens = require("./exchangeTokens");
 const createSession = require("./createSession");
 const deleteSession = require("./deleteSession");
 const refreshSession = require("./refreshSession");
 
 module.exports = {
-  createLink,
+  exchangeTokens,
   createSession,
   deleteSession,
   refreshSession,

@@ -1,3 +1,9 @@
+const createError = require("http-errors");
+
+const route404Handler = (req, res, next) => {
+  next(createError(404));
+};
+
 const errorHandler = (error, req, res, next) => {
   // Set status code
   console.error(error);
@@ -5,11 +11,11 @@ const errorHandler = (error, req, res, next) => {
   res.send(
     {
       status: error.status,
-      message: error.message,
+      errorMessage: error.message,
       stack: process.env.NODE_ENV === "development" ? error.stack : "",
     },
-    error.status
+    error.status || 500
   );
 };
 
-module.exports = errorHandler;
+module.exports = { errorHandler, route404Handler };
