@@ -27,14 +27,18 @@ const createRecord = async (collection, data) => {
     throw new Error(error);
   }
 };
-const updateRecord = async (collection, id, data) => {
+const updateRecord = async (collection, filter, data) => {
   try {
+    const record = await db
+      .collection(collection)
+      .updateOne(filter, { $set: data });
+    return record.nModified;
   } catch (error) {
     console.error(error);
     throw new Error(error);
   }
 };
-const deleteRecord = async (collection, id) => {
+const deleteRecord = async (collection, filter) => {
   try {
   } catch (error) {
     console.error(error);

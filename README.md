@@ -18,7 +18,7 @@ After a session is deleted, the user's refresh token will no longer work. This i
 
 ### Token rules
 
-1. Links can only be used once
+1. Links can only be used once. A link expires after 15 minutes.
 2. A link token can only be redeemed if the email address it was sent with is provided as well
 3. A refresh token can only be used once. A new refresh token will be issued on refresh.
 4. An auth token expires in 15 minutes

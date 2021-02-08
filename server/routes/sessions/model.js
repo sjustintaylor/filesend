@@ -24,8 +24,9 @@ exports.createSession = async (session) => {
     throw createError(500, error.message);
   }
 };
-exports.updateSession = async (session) => {
+exports.updateSession = async (id, session) => {
   try {
+    return await updateRecord("sessions", { _id: id }, session);
   } catch (error) {
     console.error(error);
     throw createError(500, error.message);

@@ -3,8 +3,10 @@ const { newSessionRequest, validSessionModel } = require("../schemas");
 const asyncHandler = require("express-async-handler");
 const createError = require("http-errors");
 const addToDate = require("date-fns/add");
+const isBefore = require("date-fns/isBefore");
+const subDate = require("date-fns/sub");
 const { v4: uuidv4 } = require("uuid");
-const { default: CompactSign } = require("jose/jws/compact/sign");
+const { default: SignJWT } = require("jose/jwt/sign");
 const key = require("../../../modules/jwt");
 const email = require("../../../modules/email");
 const emailTemplate = require("./loginEmailTemplate");
@@ -19,41 +21,58 @@ module.exports = asyncHandler(async (req, res) => {
       throw createError(400, error.message);
     });
   // Check for existing email record
-  const record = await getSession(values.email);
+  const record = (await getSession(values.email)) || {};
 
-  // Create session
-  let session;
-
-  if (!record) {
-    session = await generateSession(values.email);
-    await createSession(session);
-  } else {
-    session = record;
-    await validSessionModel.validate(record).catch(async (error) => {
-      session = await generateSession(values.email);
-      updateSession(session);
+  if (!record.userID) {
+    record.userID = uuidv4();
+    record.link = {
+      jtiWhitelist: [uuidv4()],
+      lastIssuedAt: new Date().toISOString(),
+    };
+    await createSession({
+      email: values.email,
+      userID: record.userID,
+      link: record.link,
     });
+  } else {
+    if (
+      isBefore(
+        new Date(record.link.lastIssuedAt),
+        subDate(new Date(), { minutes: process.env.LINK_MIN_LIFESPAN })
+      )
+    ) {
+      // Wipe expired jti claims if the user requested one but didn't use it
+      record.link.jtiWhitelist = [];
+    }
+    record.link.jtiWhitelist.push(uuidv4());
+    record.link.lastIssuedAt = new Date().toISOString();
+    await updateSession(record._id, record);
   }
+  const token = await generateSession(
+    record.userID,
+    record.link.jtiWhitelist[record.link.jtiWhitelist.length - 1]
+  );
   // Email the user
   await email.sendMail({
     from: process.env.EMAIL_USER,
-    to: session.email,
+    to: values.email,
     subject: "Continue logging into Filesend",
-    html: emailTemplate(
-      `${process.env.LINK_BASE_URL}/authenticate/${session.linkToken}`
-    ),
+    html: emailTemplate(`${process.env.LINK_BASE_URL}/authenticate/${token}`),
   });
-  res.status(200).send();
+  res.status(200).send("Success");
 });
 
-const generateSession = async (email) => {
-  const encoder = new TextEncoder();
-  const token = await new CompactSign(encoder.encode(uuidv4()))
+const generateSession = async (userID, nonce) => {
+  const exp =
+    addToDate(new Date(), {
+      minutes: process.env.LINK_MIN_LIFESPAN,
+    }).getTime() / 1000;
+  const token = await new SignJWT({})
     .setProtectedHeader({ alg: "ES256" })
+    .setIssuedAt()
+    .setJti(nonce)
+    .setSubject(userID)
+    .setExpirationTime(exp)
     .sign(key);
-  return {
-    email,
-    linkToken: token,
-    linkExpiry: addToDate(new Date(), { minutes: 60 }),
-  };
+  return token;
 };
