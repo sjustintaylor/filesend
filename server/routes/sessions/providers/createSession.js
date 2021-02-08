@@ -20,7 +20,7 @@ module.exports = asyncHandler(async (req, res) => {
     });
   // Check for existing email record
   const record = await getSession(values.email);
-  console.log(record);
+
   // Create session
   let session;
 
@@ -37,7 +37,7 @@ module.exports = asyncHandler(async (req, res) => {
   // Email the user
   await email.sendMail({
     from: process.env.EMAIL_USER,
-    to: values.email,
+    to: session.email,
     subject: "Continue logging into Filesend",
     html: emailTemplate(
       `${process.env.LINK_BASE_URL}/authenticate/${session.linkToken}`

@@ -18,6 +18,6 @@ exports.validSessionModel = yup.object().shape({
   linkToken: yup.string().required("Link token is invalid/missing"),
   linkExpiry: yup
     .date()
-    .min(addToDate(new Date(), { minutes: 10 }))
+    .min(addToDate(new Date(), { minutes: process.env.LINK_MIN_LIFESPAN }))
     .required("Link has expired"),
 });
