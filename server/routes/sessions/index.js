@@ -11,7 +11,7 @@ const {
 /**
  * Email a magic link to the user. While this can be called multiple times, the link can only be used once.
  */
-router.get("/?", createSession);
+router.get("/", createSession);
 
 /**
  * Create a session for the user by exchanging a magic link token for an authentication and refresh token pair.

@@ -7,6 +7,7 @@ const { v4: uuidv4 } = require("uuid");
 const { default: CompactSign } = require("jose/jws/compact/sign");
 const key = require("../../../modules/jwt");
 const email = require("../../../modules/email");
+const emailTemplate = require("./loginEmailTemplate");
 
 module.exports = asyncHandler(async (req, res) => {
   // Validate request
@@ -38,9 +39,9 @@ module.exports = asyncHandler(async (req, res) => {
     from: process.env.EMAIL_USER,
     to: values.email,
     subject: "Continue logging into Filesend",
-    html: `
-    <p>Click here to continue logging into Filesend: <a href="${process.env.LINK_BASE_URL}/authenticate/${session.linkToken}"</p>
-    `,
+    html: emailTemplate(
+      `${process.env.LINK_BASE_URL}/authenticate/${session.linkToken}`
+    ),
   });
   res.status(200).send();
 });
