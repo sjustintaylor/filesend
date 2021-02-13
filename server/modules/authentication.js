@@ -2,21 +2,23 @@ const createError = require("http-errors");
 const { publicKey } = require("./jwt");
 const asyncHandler = require("express-async-handler");
 const { getRecords } = require("./database");
+const { default: jwtVerify } = require("jose/jwt/verify");
 
-// Checks token signature
+// Checks auth token signature
 /**
  * Verifies the token signature, and attaches the decoded token to the request for downstream handlers to use.
  */
-exports.checkSignature = asyncHandler(async (req, res, next) => {
-  req.token = {};
-  next();
-});
-
-// Checks token JTI
-/**
- * Checks the JTI of the token. Expects that the signature has already been verified, and will look for the decoded token to be attached to the request.
- */
-exports.checkTokenJTI = asyncHandler(async (req, res, next) => {
+exports.checkToken = asyncHandler(async (req, res, next) => {
+  const { payload } = await jwtVerify(
+    req.headers.authorization.slice(7),
+    publicKey,
+    {}
+  );
+  const session = (await getSession(payload.sub)) || {};
+  if (!session.authToken) throw createError(401, "Token invalid");
+  if (session.authToken.jti !== payload.jti)
+    throw createError(401, "Token invalid");
+  req.token = payload;
   next();
 });
 

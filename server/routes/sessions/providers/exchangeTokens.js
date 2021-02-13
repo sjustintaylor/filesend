@@ -25,7 +25,7 @@ module.exports = asyncHandler(async (req, res) => {
   }
 
   // Validate the link
-  const { payload, protectedHeader } = await jwtVerify(jwt, publicKey, {
+  const { payload } = await jwtVerify(jwt, publicKey, {
     subject: session.userID,
   });
 
