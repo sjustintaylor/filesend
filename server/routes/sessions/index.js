@@ -1,5 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const {
+  checkSignature,
+  checkTokenJTI,
+} = require("../../modules/authentication");
 
 const {
   exchangeTokens,
@@ -22,12 +26,12 @@ router.put("/", exchangeTokens);
 /**
  * Destroy a session (log out)
  */
-router.delete("/", deleteSession);
+router.delete("/", checkSignature, checkTokenJTI, deleteSession);
 
 /**
  * Refresh the session by using a refresh token.
  * This will invalidate the previous token pair (auth/refresh)
  */
-router.patch("/", refreshSession);
+router.patch("/", checkSignature, checkTokenJTI, refreshSession);
 
 module.exports = router;

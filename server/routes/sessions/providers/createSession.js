@@ -1,5 +1,5 @@
 const { getSession, createSession, updateSession } = require("../model");
-const { newSessionRequest, validSessionModel } = require("../schemas");
+const { newSessionRequest } = require("../schemas");
 const asyncHandler = require("express-async-handler");
 const createError = require("http-errors");
 const addToDate = require("date-fns/add");
@@ -7,7 +7,7 @@ const isBefore = require("date-fns/isBefore");
 const subDate = require("date-fns/sub");
 const { v4: uuidv4 } = require("uuid");
 const { default: SignJWT } = require("jose/jwt/sign");
-const key = require("../../../modules/jwt");
+const { privateKey } = require("../../../modules/jwt");
 const email = require("../../../modules/email");
 const emailTemplate = require("./loginEmailTemplate");
 
@@ -76,6 +76,6 @@ const generateSession = async (userID, nonce) => {
     .setJti(nonce)
     .setSubject(userID)
     .setExpirationTime(exp)
-    .sign(key);
+    .sign(privateKey);
   return token;
 };

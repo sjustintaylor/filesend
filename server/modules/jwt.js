@@ -5,5 +5,5 @@ const rawKey = fs.readFileSync("./private-key.pem", {
   flag: "r",
 });
 
-const privateKey = crypto.createPrivateKey(rawKey);
-module.exports = privateKey;
+exports.privateKey = crypto.createPrivateKey(rawKey);
+exports.publicKey = crypto.createPublicKey(rawKey);
