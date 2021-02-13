@@ -26,8 +26,7 @@ module.exports = asyncHandler(async (req, res) => {
   if (!record.userID) {
     record.userID = uuidv4();
     record.link = {
-      jtiWhitelist: [uuidv4()],
-      lastIssuedAt: new Date().toISOString(),
+      jtiWhitelist: [{ jti: uuidv4(), issuedAt: new Date().toISOString() }],
     };
     await createSession({
       email: values.email,
@@ -36,16 +35,20 @@ module.exports = asyncHandler(async (req, res) => {
     });
   } else {
     if (
-      isBefore(
-        new Date(record.link.lastIssuedAt),
-        subDate(new Date(), { minutes: process.env.LINK_MIN_LIFESPAN })
+      record.link.jtiWhitelist.some((el) =>
+        isBefore(
+          new Date(el.issuedAt),
+          subDate(new Date(), { minutes: process.env.LINK_MIN_LIFESPAN })
+        )
       )
     ) {
-      // Wipe expired jti claims if the user requested one but didn't use it
+      // Wipe expired jti claims
       record.link.jtiWhitelist = [];
     }
-    record.link.jtiWhitelist.push(uuidv4());
-    record.link.lastIssuedAt = new Date().toISOString();
+    record.link.jtiWhitelist.push({
+      jti: uuidv4(),
+      issuedAt: new Date().toISOString(),
+    });
     await updateSession(record._id, record);
   }
   const token = await generateSession(

@@ -6,5 +6,11 @@ const { v4: uuidv4 } = require("uuid");
 const addToDate = require("date-fns/add");
 
 module.exports = asyncHandler(async (req, res) => {
-  res.send({}, 200);
+  // Validate request
+  // Get the session record
+  // Validate the link
+  // Wipe the jti whitelist
+  // Update the record
+  // Issue a token set
+  res.status(200).json({});
 });
