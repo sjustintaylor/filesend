@@ -72,3 +72,5 @@ jwt-dev-pubkey.pem
 
 client-old/
 sb-react/
+
+.yarn/
