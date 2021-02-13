@@ -37,11 +37,6 @@ module.exports = asyncHandler(async (req, res) => {
   session.link.jtiWhitelist = [];
 
   // Update the record
-  session.authToken = {
-    jti: uuidv4(),
-    issuedAt: new Date().toISOString(),
-    expires: addToDate(new Date(), { minutes: process.env.AUTH_LIFESPAN }),
-  };
   session.refreshToken = {
     jti: uuidv4(),
     issuedAt: new Date().toISOString(),
@@ -53,7 +48,6 @@ module.exports = asyncHandler(async (req, res) => {
   const authToken = await new SignJWT({ type: "auth" })
     .setProtectedHeader({ alg: "ES256" })
     .setIssuedAt()
-    .setJti(session.authToken.jti)
     .setSubject(session.userID)
     .setExpirationTime(new Date(session.authToken.expires).getTime() / 1000)
     .sign(privateKey);

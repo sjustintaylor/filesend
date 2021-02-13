@@ -3,8 +3,7 @@ const { newSessionRequest } = require("../schemas");
 const asyncHandler = require("express-async-handler");
 const createError = require("http-errors");
 const addToDate = require("date-fns/add");
-const isBefore = require("date-fns/isBefore");
-const subDate = require("date-fns/sub");
+const isPast = require("date-fns/isPast");
 const { v4: uuidv4 } = require("uuid");
 const { default: SignJWT } = require("jose/jwt/sign");
 const { privateKey } = require("../../../modules/jwt");
@@ -34,14 +33,7 @@ module.exports = asyncHandler(async (req, res) => {
       link: record.link,
     });
   } else {
-    if (
-      record.link.jtiWhitelist.some((el) =>
-        isBefore(
-          new Date(el.issuedAt),
-          subDate(new Date(), { minutes: process.env.LINK_MIN_LIFESPAN })
-        )
-      )
-    ) {
+    if (record.link.jtiWhitelist.some((el) => isPast(new Date(el.issuedAt)))) {
       // Wipe expired jti claims
       record.link.jtiWhitelist = [];
     }
