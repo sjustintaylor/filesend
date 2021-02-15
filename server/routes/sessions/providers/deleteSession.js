@@ -1,8 +1,9 @@
 const asyncHandler = require("express-async-handler");
-const createError = require("http-errors");
-const { deleteSession } = require("../model");
+const Session = require("../model");
 
 module.exports = asyncHandler(async (req, res) => {
-  await deleteSession(req.token.sub);
+  const session = await Session.findSession("userID", req.token.sub);
+  delete session.refreshToken;
+  await session.replaceOne(session);
   res.status(204).send();
 });

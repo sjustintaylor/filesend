@@ -20,32 +20,31 @@ module.exports = asyncHandler(async (req, res) => {
       throw createError(400, error.errors);
     });
   // Check for existing email record
-  const record = (await Sessions.findSession("email", values.email)) || {};
+  let record = await Sessions.findSession("email", values.email);
 
-  if (!record.userID) {
-    record.userID = uuidv4();
-    record.magicLinkJTIWhitelist = [
-      { jti: uuidv4(), issuedAt: new Date().toISOString() },
-    ];
-    await createSession({
+  if (!record) {
+    record = new Sessions({
+      userID: uuidv4(),
       email: values.email,
-      userID: record.userID,
-      link: record.link,
+      magicLinkJTIWhitelist: [
+        { jti: uuidv4(), issuedAt: new Date().toISOString() },
+      ],
     });
+    await record.save();
   } else {
     // Wipe expired claims
-    record.link.jtiWhitelist = record.link.jtiWhitelist.filter((el) =>
+    record.magicLinkJTIWhitelist = record.magicLinkJTIWhitelist.filter((el) =>
       isFuture(new Date(el.issuedAt))
     );
-    record.link.jtiWhitelist.push({
+    record.magicLinkJTIWhitelist.push({
       jti: uuidv4(),
       issuedAt: new Date().toISOString(),
     });
-    await updateSession(record._id, record);
+    await record.save();
   }
   const token = await generateSession(
     record.userID,
-    record.link.jtiWhitelist[record.link.jtiWhitelist.length - 1].jti
+    record.magicLinkJTIWhitelist[record.magicLinkJTIWhitelist.length - 1].jti
   );
   // Email the user
   if (process.env.NODE_ENV === "development") {

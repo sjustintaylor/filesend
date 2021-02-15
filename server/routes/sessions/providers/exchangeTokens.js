@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const createError = require("http-errors");
 const { exchangeTokenRequest } = require("../schemas");
-const { getSession, updateSession } = require("../model");
+const Sessions = require("../model");
 const { publicKey, privateKey } = require("../../../modules/jwt");
 const { default: jwtVerify } = require("jose/jwt/verify");
 const { default: SignJWT } = require("jose/jwt/sign");
@@ -19,8 +19,8 @@ module.exports = asyncHandler(async (req, res) => {
     });
 
   // Get the session record
-  const session = (await getSession("email", values.email)) || {};
-  if (!session.userID) {
+  const session = await Sessions.findSession("email", values.email);
+  if (!session) {
     throw createError(401, "User not found");
   }
 
@@ -30,11 +30,11 @@ module.exports = asyncHandler(async (req, res) => {
   });
 
   // Validate the JTI
-  if (!session.link.jtiWhitelist.some((el) => el.jti === payload.jti)) {
+  if (!session.magicLinkJTIWhitelist.some((el) => el.jti === payload.jti)) {
     throw createError(401, "Link token invalid or expired");
   }
   // Wipe the jti whitelist
-  session.link.jtiWhitelist = [];
+  session.magicLinkJTIWhitelist = [];
 
   // Update the record
   session.refreshToken = {
@@ -42,7 +42,7 @@ module.exports = asyncHandler(async (req, res) => {
     issuedAt: new Date().toISOString(),
     expires: addToDate(new Date(), { days: process.env.REFRESH_LIFESPAN }),
   };
-  await updateSession(session._id, session);
+  await session.save();
 
   // Generate auth token
   const authToken = await new SignJWT({ type: "auth" })
