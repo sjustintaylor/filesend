@@ -1,4 +1,4 @@
-const { getSession, createSession, updateSession } = require("../model");
+const Sessions = require("../model");
 const { newSessionRequest } = require("../schemas");
 const asyncHandler = require("express-async-handler");
 const createError = require("http-errors");
@@ -20,13 +20,13 @@ module.exports = asyncHandler(async (req, res) => {
       throw createError(400, error.errors);
     });
   // Check for existing email record
-  const record = (await getSession("email", values.email)) || {};
+  const record = (await Sessions.findSession("email", values.email)) || {};
 
   if (!record.userID) {
     record.userID = uuidv4();
-    record.link = {
-      jtiWhitelist: [{ jti: uuidv4(), issuedAt: new Date().toISOString() }],
-    };
+    record.magicLinkJTIWhitelist = [
+      { jti: uuidv4(), issuedAt: new Date().toISOString() },
+    ];
     await createSession({
       email: values.email,
       userID: record.userID,

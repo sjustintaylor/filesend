@@ -1,42 +1,24 @@
-const {
-  createRecord,
-  updateRecord,
-  deleteRecord,
-  getRecords,
-} = require("../../modules/database");
-const createError = require("http-errors");
+const mongoose = require("mongoose");
 
-exports.getSession = async (key, value) => {
-  try {
-    const session = await getRecords("sessions", { [key]: value });
-    if (!session) return false;
-    return session[0];
-  } catch (error) {
-    console.error(error);
-    throw createError(500, error.message);
-  }
+const sessionSchema = new mongoose.Schema({
+  email: { type: String, unique: true, required: true },
+  userID: { type: String, unique: true, required: true },
+  magicLinkJTIWhitelist: [
+    {
+      jti: { type: String, required: true },
+      issuedAt: { type: Date, required: true },
+    },
+  ],
+  refreshToken: {
+    jti: { type: String, unique: true },
+    issuedAt: { type: Date },
+    expires: { type: Date },
+  },
+});
+
+sessionSchema.statics.findSession = async function (key, value) {
+  let session = await this.findOne({ [key]: value });
+  return session;
 };
-exports.createSession = async (session) => {
-  try {
-    return await createRecord("sessions", session);
-  } catch (error) {
-    console.error(error);
-    throw createError(500, error.message);
-  }
-};
-exports.updateSession = async (id, session) => {
-  try {
-    return await updateRecord("sessions", { _id: id }, session);
-  } catch (error) {
-    console.error(error);
-    throw createError(500, error.message);
-  }
-};
-exports.deleteSession = async (userID) => {
-  try {
-    return await deleteRecord("sessions", { userID: userID });
-  } catch (error) {
-    console.error(error);
-    throw createError(500, error.message);
-  }
-};
+
+module.exports = mongoose.model("sessions", sessionSchema);
