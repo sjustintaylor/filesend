@@ -6,9 +6,9 @@ const {
 } = require("../../modules/database");
 const createError = require("http-errors");
 
-exports.getSession = async (email) => {
+exports.getSession = async (key, value) => {
   try {
-    const session = await getRecords("sessions", { email });
+    const session = await getRecords("sessions", { [key]: value });
     if (!session) return false;
     return session[0];
   } catch (error) {
@@ -32,8 +32,9 @@ exports.updateSession = async (id, session) => {
     throw createError(500, error.message);
   }
 };
-exports.deleteSession = async () => {
+exports.deleteSession = async (userID) => {
   try {
+    return await deleteRecord("sessions", { userID: userID });
   } catch (error) {
     console.error(error);
     throw createError(500, error.message);

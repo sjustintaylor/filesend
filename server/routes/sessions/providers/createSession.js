@@ -3,7 +3,7 @@ const { newSessionRequest } = require("../schemas");
 const asyncHandler = require("express-async-handler");
 const createError = require("http-errors");
 const addToDate = require("date-fns/add");
-const isPast = require("date-fns/isPast");
+const isFuture = require("date-fns/isFuture");
 const { v4: uuidv4 } = require("uuid");
 const { default: SignJWT } = require("jose/jwt/sign");
 const { privateKey } = require("../../../modules/jwt");
@@ -17,10 +17,10 @@ module.exports = asyncHandler(async (req, res) => {
       abortEarly: false,
     })
     .catch((error) => {
-      throw createError(400, error.message);
+      throw createError(400, error.errors);
     });
   // Check for existing email record
-  const record = (await getSession(values.email)) || {};
+  const record = (await getSession("email", values.email)) || {};
 
   if (!record.userID) {
     record.userID = uuidv4();
@@ -33,10 +33,10 @@ module.exports = asyncHandler(async (req, res) => {
       link: record.link,
     });
   } else {
-    if (record.link.jtiWhitelist.some((el) => isPast(new Date(el.issuedAt)))) {
-      // Wipe expired jti claims
-      record.link.jtiWhitelist = [];
-    }
+    // Wipe expired claims
+    record.link.jtiWhitelist = record.link.jtiWhitelist.filter((el) =>
+      isFuture(new Date(el.issuedAt))
+    );
     record.link.jtiWhitelist.push({
       jti: uuidv4(),
       issuedAt: new Date().toISOString(),
@@ -45,23 +45,29 @@ module.exports = asyncHandler(async (req, res) => {
   }
   const token = await generateSession(
     record.userID,
-    record.link.jtiWhitelist[record.link.jtiWhitelist.length - 1]
+    record.link.jtiWhitelist[record.link.jtiWhitelist.length - 1].jti
   );
   // Email the user
-  await email.sendMail({
-    from: process.env.EMAIL_USER,
-    to: values.email,
-    subject: "Continue logging into Filesend",
-    html: emailTemplate(`${process.env.LINK_BASE_URL}/authenticate/${token}`),
-  });
+  if (process.env.NODE_ENV === "development") {
+    res.status(200).send(token);
+    return;
+  } else {
+    await email.sendMail({
+      from: process.env.EMAIL_USER,
+      to: values.email,
+      subject: "Continue logging into Filesend",
+      html: emailTemplate(`${process.env.LINK_BASE_URL}/authenticate/${token}`),
+    });
+  }
   res.status(200).send("Success");
 });
 
 const generateSession = async (userID, nonce) => {
-  const exp =
+  const exp = Math.floor(
     addToDate(new Date(), {
       minutes: process.env.LINK_MIN_LIFESPAN,
-    }).getTime() / 1000;
+    }).getTime() / 1000
+  );
   const token = await new SignJWT({})
     .setProtectedHeader({ alg: "ES256" })
     .setIssuedAt()

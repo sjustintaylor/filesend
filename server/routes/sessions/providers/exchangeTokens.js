@@ -15,23 +15,23 @@ module.exports = asyncHandler(async (req, res) => {
       abortEarly: false,
     })
     .catch((error) => {
-      throw createError(400, error.message);
+      throw createError(400, error.errors);
     });
 
   // Get the session record
-  const session = (await getSession(values.email)) || {};
+  const session = (await getSession("email", values.email)) || {};
   if (!session.userID) {
     throw createError(401, "User not found");
   }
 
   // Validate the link
-  const { payload } = await jwtVerify(jwt, publicKey, {
+  const { payload } = await jwtVerify(values.token, publicKey, {
     subject: session.userID,
   });
 
   // Validate the JTI
   if (!session.link.jtiWhitelist.some((el) => el.jti === payload.jti)) {
-    throw createError(401, "Link token has expired");
+    throw createError(401, "Link token invalid or expired");
   }
   // Wipe the jti whitelist
   session.link.jtiWhitelist = [];
@@ -49,7 +49,13 @@ module.exports = asyncHandler(async (req, res) => {
     .setProtectedHeader({ alg: "ES256" })
     .setIssuedAt()
     .setSubject(session.userID)
-    .setExpirationTime(new Date(session.authToken.expires).getTime() / 1000)
+    .setExpirationTime(
+      Math.floor(
+        new Date(
+          addToDate(new Date(), { minutes: process.env.AUTH_LIFESPAN })
+        ).getTime() / 1000
+      )
+    )
     .sign(privateKey);
 
   // Set refresh token cookie
@@ -58,7 +64,9 @@ module.exports = asyncHandler(async (req, res) => {
     .setIssuedAt()
     .setJti(session.refreshToken.jti)
     .setSubject(session.userID)
-    .setExpirationTime(new Date(session.refreshToken.expires).getTime() / 1000)
+    .setExpirationTime(
+      Math.floor(new Date(session.refreshToken.expires).getTime() / 1000)
+    )
     .sign(privateKey);
 
   res

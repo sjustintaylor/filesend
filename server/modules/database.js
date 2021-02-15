@@ -40,6 +40,8 @@ const updateRecord = async (collection, filter, data) => {
 };
 const deleteRecord = async (collection, filter) => {
   try {
+    const record = await db.collection(collection).deleteMany(filter);
+    return record.deletedCount;
   } catch (error) {
     console.error(error);
     throw new Error(error);
