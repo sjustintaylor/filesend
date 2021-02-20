@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const sessionSchema = new mongoose.Schema({
   email: { type: String, unique: true, required: true },
   userID: { type: String, unique: true, required: true },
+  inviteCode: { type: String, unique: true, required: true },
+  invitedBy: { type: String, unique: true, required: false },
   magicLinkJTIWhitelist: [
     {
       jti: { type: String, required: true },

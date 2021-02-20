@@ -9,6 +9,8 @@ const { default: SignJWT } = require("jose/jwt/sign");
 const { privateKey } = require("../../../modules/jwt");
 const email = require("../../../modules/email");
 const emailTemplate = require("./loginEmailTemplate");
+const { customAlphabet } = require("nanoid/async");
+const nanoid = customAlphabet("1234567890abcdef", 10);
 
 module.exports = asyncHandler(async (req, res) => {
   // Validate request
@@ -19,12 +21,29 @@ module.exports = asyncHandler(async (req, res) => {
     .catch((error) => {
       throw createError(400, error.errors);
     });
+
   // Check for existing email record
   let record = await Sessions.findSession("email", values.email);
 
   if (!record) {
+    // Check for invite code. Invite code must be root code, or an existing user's code.
+    if (!values.invite) {
+      throw createError(
+        401,
+        "A valid invite code is required on your first login. Did you forget to sign up?"
+      );
+    } else if (values.invite !== process.env.INVITE_CODE) {
+      let inviter = await Sessions.findSession("inviteCode", values.invite);
+      if (!inviter)
+        throw createError(
+          401,
+          "A valid invite code is required on your first login. Did you forget to sign up?"
+        );
+    }
     record = new Sessions({
       userID: uuidv4(),
+      inviteCode: await nanoid(),
+      invitedBy: values.invite,
       email: values.email,
       magicLinkJTIWhitelist: [
         { jti: uuidv4(), issuedAt: new Date().toISOString() },

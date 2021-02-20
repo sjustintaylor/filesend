@@ -2,8 +2,8 @@ const yup = require("yup");
 
 exports.newSessionRequest = yup.object().shape({
   email: yup.string().email().required("Email is required"),
+  invite: yup.string().min(10).optional(),
 });
-
 exports.exchangeTokenRequest = yup.object().shape({
   email: yup
     .string()
