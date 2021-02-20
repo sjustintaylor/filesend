@@ -33,6 +33,7 @@
 .input__input:focus {
   border: 2px solid var(--input--border);
   background-color: transparent;
+  outline: none;
 }
 .input__input:focus ~ label {
   top: 0;

@@ -4,7 +4,9 @@ import { useParams } from "react-router-dom";
 import { isLoggedIn } from "modules/authentication";
 
 // Component imports
-import Authentication from "components/authentication";
+import Login from "components/login";
+import Signup from "components/signup";
+import TokenExchange from "components/tokenExchange";
 import Files from "components/files";
 import PrivateRoute from "components/router/components/privateroute";
 
@@ -14,14 +16,12 @@ export const Router = () => {
     <BrowserRouter>
       {/* Open routes */}
       <Switch>
-        <Route
-          path="/"
-          children={isLoggedIn() ? <Files /> : <Authentication />}
-        />
+        <Route path="/" children={isLoggedIn() ? <Files /> : <Login />} />
         <Route
           path="/authenticate/:token"
-          children={<Authentication token={token ? token : false} />}
+          children={<TokenExchange token={token ? token : false} />}
         />
+        <Route path="/signup" children={<Signup />} />
       </Switch>
       {/* Protected routes */}
       <Switch></Switch>

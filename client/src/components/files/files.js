@@ -4,7 +4,7 @@ import useHooks from "./hooks";
 import "./files.css";
 
 export const Files = () => {
-  const {} = useHooks();
+  // const {} = useHooks();
   return (
     <div className="files">
       <Panel className="files--panel files--downloads">

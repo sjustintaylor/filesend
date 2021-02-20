@@ -7,7 +7,8 @@ const { v4: uuidv4 } = require("uuid");
 const addToDate = require("date-fns/add");
 
 module.exports = asyncHandler(async (req, res) => {
-  if (!req.cookies.refresh) throw createError(401);
+  if (!req.cookies.refresh)
+    throw createError(401, "Refresh cookie not present");
   const { payload } = await jwtVerify(req.cookies.refresh, publicKey, {});
   const session = await Session.findSession(payload.sub);
   session.refreshToken = {
